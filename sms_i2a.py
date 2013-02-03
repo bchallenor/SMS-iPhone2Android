@@ -3,6 +3,7 @@
 
 import sys
 import os
+from xml.sax.saxutils import quoteattr
 
 def readSMSdb(dbfile):
     import sqlite3
@@ -27,7 +28,7 @@ def output2File(data, output_file):
     for addr, date, body, is_from_me in data:
         # type 1 for received, 2 for sent
         typ = 2 if is_from_me == 1 else 1
-        f.write("""<sms protocol="0" address="%s" date="%d000" type="%s" subject="null" body="%s" toa="null" sc_toa="null" service_center="null" read="1" status="-1" locked="0" readable_date="" contact_name="(Unknown)" />\n""" % (addr, date, typ, body))
+        f.write("""<sms protocol="0" address=%s date="%d000" type="%s" subject="null" body=%s toa="null" sc_toa="null" service_center="null" read="1" status="-1" locked="0" readable_date="" contact_name="(Unknown)" />\n""" % (quoteattr(addr), date, typ, quoteattr(body)))
     f.write("</smses>\n")
     f.close()
 
